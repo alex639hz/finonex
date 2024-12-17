@@ -1,23 +1,21 @@
 import { createWriteStream } from 'fs'
 import express from 'express';
+import jsonl from 'jsonl';
 const app = express();
 const port = 3000;
-const filename = 'localDb.txt';
+const filename = 'localDb.log';
 
 app.use(verifyTokenMiddleware);
 
 app.post("/liveEvent", (req, res) => {
   req
+    .pipe(jsonl({ toBufferStream: 1 }))
     .pipe(createWriteStream(filename, { flags: 'a' }))
     .on('finish', () => {
-      console.log(`File saved: ${filename}: ${req.body}`)
+      console.log(`Event saved to: ${filename}`)
       res.send("liveEvent registered successfully");
     })
 });
-
-
-
-
 
 app.get("/", (req, res) => {
   res.send("hello");
@@ -25,15 +23,6 @@ app.get("/", (req, res) => {
 
 app.use('*', (req, res) => {
   res.status(400).send({ error: 'incorrect URL - returned by catch-all handler' })
-})
-
-app.use((err, req, res, next) => {
-  if (err.name === 'UnauthorizedError') {
-    res.status(401).json({ "error": err.name + ": " + err.message })
-  } else if (err) {
-    res.status(400).json({ "error": err.name + ": " + err.message })
-    console.log(err)
-  }
 })
 
 app.listen(port, console.log('server started'))
