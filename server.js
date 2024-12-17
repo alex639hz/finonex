@@ -3,10 +3,19 @@ import express from 'express';
 import jsonl from 'jsonl';
 const app = express();
 const port = 3000;
-const filename = 'localDb.log';
+const filename = 'output.log';
 
-app.use(verifyTokenMiddleware);
+// verify authorisation for all routes
+app.use((req, res, next) => {
+  const { authorization } = req.headers;
+  if (authorization != 'secret') {
+    console.log(`${Date.now()} unauthorised attempt`);
+    return res.status(401).send("Unauthorized");
+  }
+  next()
+});
 
+// register new event to local file 
 app.post("/liveEvent", (req, res) => {
   req
     .pipe(jsonl({ toBufferStream: 1 }))
@@ -17,22 +26,18 @@ app.post("/liveEvent", (req, res) => {
     })
 });
 
-app.get("/", (req, res) => {
-  res.send("hello");
+// return all user events from db 
+app.get("/userEvent/:userId", (req, res) => {
+  res.send(`Hi ${JSON.stringify(req.params.userId)}`);
 });
 
+// catch incorrect URLs
 app.use('*', (req, res) => {
-  res.status(400).send({ error: 'incorrect URL - returned by catch-all handler' })
+  res.status(400).send({ error: 'incorrect URL: ' + `${req.originalUrl}` })
 })
 
+// start server
 app.listen(port, console.log('server started'))
 
-// util functions 
-function verifyTokenMiddleware(req, res, next) {
-  const { authorization } = req.headers;
-  if (authorization != 'secret') {
-    console.log(`${Date()} unauthorised attempt`);
-    return res.status(401).json({ msg: "Unauthorized" });
-  }
-  next()
-};
+// util functions
+// function verifyTokenMiddleware;
