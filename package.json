@@ -1,0 +1,24 @@
+{
+  "name": "finonex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alex639hz/finonex.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alex639hz/finonex/issues"
+  },
+  "homepage": "https://github.com/alex639hz/finonex#readme",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
