@@ -1,11 +1,18 @@
+import { createWriteStream } from 'fs'
 import express from 'express';
 const app = express();
 const port = 3000;
+const filename = 'localDb.txt';
 
 app.use(verifyTokenMiddleware);
 
-app.get("/", (req, res) => {
-  res.send("hello");
+app.post("/liveEvent", (req, res) => {
+  req
+    .pipe(createWriteStream(filename, { flags: 'a' }))
+    .on('finish', () => {
+      console.log(`File saved: ${filename}: ${req.body}`)
+      res.send("liveEvent registered successfully");
+    })
 });
 
 
