@@ -1,5 +1,3 @@
-import { request } from 'http'
-import { createReadStream } from 'fs'
 import * as  lineReader from 'line-reader'
 import pg from 'pg'
 const { Client } = pg

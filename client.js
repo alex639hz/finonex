@@ -20,7 +20,7 @@ const req = request(options, (res) => {
     console.log(chunk);
   });
 });
-// ---------------
+
 lineReader.eachLine(filename, function (line, last) {
   console.log(`Event: ${line}`);
   req.write(line);

@@ -1,6 +1,17 @@
 import { createWriteStream } from 'fs'
 import express from 'express';
 import jsonl from 'jsonl';
+import pg from 'pg'
+const { Client } = pg
+const client = new Client({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'postgres',
+  password: 'root',
+  port: 5432,
+})
+await client.connect()
+
 const app = express();
 const port = 3000;
 const filename = 'output.log';
@@ -27,8 +38,10 @@ app.post("/liveEvent", (req, res) => {
 });
 
 // return all user events from db 
-app.get("/userEvent/:userId", (req, res) => {
-  res.send(`Hi ${JSON.stringify(req.params.userId)}`);
+app.get("/userEvent/:userId", async (req, res) => {
+  const query = `SELECT * FROM users_revenue WHERE user_id = '${req.params.userId}';`
+  const result = (await client.query(query)).rows[0]
+  res.json(result);
 });
 
 // catch incorrect URLs
