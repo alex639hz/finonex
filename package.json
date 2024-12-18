@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "server": "node server.js",
-    "client": "node client.js"
+    "client": "node client.js",
+    "process": "node data_processor.js output.log"
   },
   "repository": {
     "type": "git",
@@ -20,9 +21,9 @@
   },
   "homepage": "https://github.com/alex639hz/finonex#readme",
   "dependencies": {
-    "event-stream": "^4.0.1",
     "express": "^4.21.2",
     "jsonl": "^1.1.2",
-    "line-reader": "^0.4.0"
+    "line-reader": "^0.4.0",
+    "pg": "^8.13.1"
   }
 }

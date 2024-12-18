@@ -1,11 +1,13 @@
-CREATE DATABASE finonexDb;
 
-\c finonexDb
-
-CREATE TABLE users_revenue (
-    user_id SERIAL PRIMARY KEY,
-    price NUMERIC NOT NULL,
+CREATE TABLE IF NOT EXISTS users_revenue (
+    user_id VARCHAR (50) PRIMARY KEY,
+    revenue NUMERIC
 );
 
--- INSERT INTO clothes_stock (clothes_name, price, cost, colour, sex, clothes_size, stock_level)
--- VALUES ('Red T-shirt', 1.99, 0.99, 'red', 'male', 'small', 100);
+-- SELECT * FROM users_revenue;
+
+INSERT INTO users_revenue (user_id, revenue)
+VALUES 
+  ('user1', 0),
+  ('user2', 0);
+
